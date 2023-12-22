@@ -41,7 +41,7 @@ function gameRound() {
     playerScore++;
     resultMessage.textContent = `You win! Your ${playerSelection} beat computer's ${computerSelection}`;
   }
-  scoreBoard.textContent = `Computer: ${computerScore} You: ${playerScore}`;
+  scoreBoard.textContent = `Computer: ${computerScore} | You: ${playerScore}`;
 }
 
 // End the game
