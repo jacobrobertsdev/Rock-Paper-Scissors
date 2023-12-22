@@ -1,57 +1,83 @@
+const rockButton = document.querySelector(".rock");
+const paperButton = document.querySelector(".paper");
+const scissorsButton = document.querySelector(".scissors");
+const resetButton = document.querySelector(".reset");
+const resultMessage = document.querySelector(".result-message");
+const scoreBoard = document.querySelector("h3");
+const allButtons = document.querySelectorAll("button");
+
+// Set default values
 let computerScore = 0;
 let playerScore = 0;
+let playerSelection;
 
-// Generate computer selection
-
-function getComputerChoice() {
-  let choices = ["rock", "paper", "scissors"];
-  return choices[Math.floor(Math.random() * choices.length)];
+// Get computer selection
+function getComputerSelection() {
+  let options = ["Rock", "Paper", "Scissors"];
+  return options[Math.floor(Math.random() * options.length)];
 }
-
 
 // Play a round of the game
-
 function gameRound() {
+  let computerSelection = getComputerSelection();
 
-  let playerSelection = prompt(
-    "Please enter: Rock, Paper, or Scissors!"
-  ).toLowerCase();
-  let computerSelection = getComputerChoice();
   if (computerSelection == playerSelection) {
-    alert(`Tie! Your Score:${playerScore}, Computer Score:${computerScore}`);
+    resultMessage.textContent = `Tie! Both players chose ${computerSelection}`;
   } else if (
-    (computerSelection === "rock" && playerSelection == "scissors") ||
-    (computerSelection === "paper" && playerSelection == "rock") ||
-    (computerSelection === "scissors" && playerSelection == "paper")
+    (computerSelection === "Rock" && playerSelection == "Scissors") ||
+    (computerSelection === "Paper" && playerSelection == "Rock") ||
+    (computerSelection === "Scissors" && playerSelection == "Paper")
   ) {
     computerScore++;
-    alert(
-      `You lose! ${computerSelection} beats ${playerSelection}. Your Score:${playerScore}, Computer Score:${computerScore}`
-    );
+    resultMessage.textContent = `Computer wins! ${computerSelection} beats ${playerSelection}`;
   } else if (
-    (playerSelection == "rock" && computerSelection == "scissors") ||
-    (playerSelection == "paper" && computerSelection == "rock") ||
-    (playerSelection == "scissors" && computerSelection == "paper")
+    (playerSelection == "Rock" && computerSelection == "Scissors") ||
+    (playerSelection == "Paper" && computerSelection == "Rock") ||
+    (playerSelection == "Scissors" && computerSelection == "Paper")
   ) {
     playerScore++;
-    alert(
-      `You win! ${playerSelection} beats ${computerSelection}. Your Score:${playerScore}, Computer Score:${computerScore}`
-    );
+    resultMessage.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
+  }
+  scoreBoard.textContent = `Computer: ${computerScore} You: ${playerScore}`;
+}
+
+// End the game
+function endGame() {
+  for (let button of allButtons) {
+    button.classList.toggle("hidden");
   }
 }
 
+//Reset scores and display
+function resetScores() {
+  playerScore = 0;
+  computerScore = 0;
+  scoreBoard.textContent = `Computer: ${computerScore} You: ${playerScore}`;
+}
 
-// Play a full game (first one to score 5 points)
+// Check for a winner (first to 5 points)
+function checkForWinner() {
+  if (playerScore === 5 || computerScore === 5) {
+    resultMessage.textContent = `Game Over!`;
+    endGame();
+  }
+}
 
-function playGame() {
-  while (playerScore < 5 && computerScore < 5) {
+// Event listeners
+function playerChoice(button, choice) {
+  button.addEventListener("click", () => {
+    playerSelection = choice;
     gameRound();
-    if (playerScore === 5) {
-      alert(`You won the game! Score: ${playerScore} to ${computerScore}`);
-    } else if (computerScore === 5) {
-      alert(`You lost the game! Score: ${playerScore} to ${computerScore}`);
-    }
-  }
+    checkForWinner();
+  });
 }
 
-playGame();
+playerChoice(rockButton, "Rock");
+playerChoice(paperButton, "Paper");
+playerChoice(scissorsButton, "Scissors");
+
+resetButton.addEventListener("click", () => {
+  resetScores();
+  endGame();
+  resultMessage.textContent = ``;
+});
