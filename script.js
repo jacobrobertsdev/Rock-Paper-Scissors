@@ -4,6 +4,7 @@ const paperButton = document.querySelector(".paper");
 const scissorsButton = document.querySelector(".scissors");
 const resetButton = document.querySelector(".reset");
 const resultMessage = document.querySelector(".result-message");
+const mainHeader = document.querySelector("h1");
 const scoreBoard = document.querySelector("h3");
 const allButtons = document.querySelectorAll("button");
 
@@ -76,6 +77,7 @@ function playerChoice(button, choice) {
     playerSelection = choice;
     gameRound();
     checkForWinner();
+    mainHeader.textContent = `${playerSelection} vs. ${computerSelection}`;
   });
 }
 
@@ -88,4 +90,5 @@ resetButton.addEventListener("click", () => {
   resetScores();
   endGame();
   resultMessage.textContent = `First to 5 points wins!`;
+  mainHeader.textContent = "Rock Paper Scissors";
 });
